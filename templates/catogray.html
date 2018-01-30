@@ -1,0 +1,63 @@
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title> All The Items From {{ myCategory.name }}</title>
+</head>
+<body>
+<nav>
+    <div class="page_nav">
+        <a href="{{url_for('show_items_for_category')}}"> Catalog App </a>
+    </div>
+    {% if user_id != None %}
+    <div id="logout">
+        <a href="{{url_for('gdisconnect')}}">
+            <button>logout</button>
+        </a>
+    </div>
+    {% else %}
+    <div id="login">
+        <a href="{{url_for('showLogin')}}">
+            <button>login</button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</nav>
+<div class="conect">
+    <div class="all_cat">
+        <h1>Categories</h1>
+        <ul>
+            {%for cat in categories%}
+            <li>
+                <a href="{{url_for('show_items_for_category_with_id', cat_id=cat.id)}}">
+                    {{ cat.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="all_item">
+        <h1>the list items of <span> {{ myCategory.name }} </span></h1>
+        <ul>
+            {%for i in items%}
+            <li>
+                <a href="{{url_for('showItem', cat_id=i.cat_id, item_id=i.id)}}">
+                    {{ i.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="add_item">
+    <a href="{{ url_for('addItemCat', cat_id = myCategory.id) }}">
+        <button>Add Item</button>
+    </a>
+</div>
+<div class="clear"></div>
+
+</body>
+</html>

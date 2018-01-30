@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title> Delete an Item {{ item.name }} </title>
+</head>
+<body>
+<nav>
+    <div class="page_nav">
+        <a href="{{url_for('show_items_for_category')}}"> Catalog App </a>
+    </div>
+    {% if user_id != None %}
+    <div id="logout">
+        <a href="{{url_for('gdisconnect')}}">
+            <button>logout</button>
+        </a>
+    </div>
+    {% else %}
+    <div id="login">
+        <a href="{{url_for('showLogin')}}">
+            <button>login</button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</nav>
+<div class="contect_add conect_1 conect_2" style="text-align:center;">
+    <h1 class="title_name">
+        You Want Really Delete
+        <span style="color:red">{{ item.name }}</span>
+        !!!!</h1>
+    <form action="{{url_for('deleteItem',cat_id=item.cat_id, item_id=item.id)}}" method="POST">
+        <input type="hidden" name="ID" value="{{item.id}}"/>
+        <input type="submit" value="Delete" class="design_buttom_del">
+        <a href="{{ url_for('show_items_for_category',cat_id=item.cat_id,item_id=item.id) }}">
+            <buttom class="design_buttom_can">Cancel</buttom>
+        </a>
+    </form>
+</div>
+</body>
+
+</html>

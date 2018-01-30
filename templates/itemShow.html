@@ -1,0 +1,39 @@
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title> Show item {{ myCategory.name }}</title>
+</head>
+<body>
+<nav>
+    <div class="page_nav">
+        <a href="{{url_for('show_items_for_category')}}"> Catalog App </a>
+    </div>
+    {% if user_id != None %}
+    <div id="logout">
+        <a href="{{url_for('gdisconnect')}}">
+            <button>logout</button>
+        </a>
+    </div>
+    {% else %}
+    <div id="login">
+        <a href="{{url_for('showLogin')}}">
+            <button>login</button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</nav>
+<div class="conect conect_1">
+    <h1>{{myItem.name}}</h1>
+    <p>{{myItem.description}}</p><br/><br/>
+    <a href="{{ url_for('editItem', cat_id=myItem.cat_id,item_id=myItem.id)}}">
+        <buttom class="design_buttom_del">Edite</buttom>
+    </a>
+    <a href="{{ url_for('deleteItem',cat_id=myItem.cat_id,item_id=myItem.id) }}">
+        <buttom class="design_buttom_del design_buttom_can">Delete</buttom>
+    </a>
+</div>
+</body>
+</html>

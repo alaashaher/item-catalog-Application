@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title> Edite an Item to {{ item.name }} </title>
+</head>
+<body>
+<nav>
+    <div class="page_nav">
+        <a href="{{url_for('show_items_for_category')}}"> Catalog App </a>
+    </div>
+    {% if user_id != None %}
+    <div id="logout">
+        <a href="{{url_for('gdisconnect')}}">
+            <button>logout</button>
+        </a>
+    </div>
+    {% else %}
+    <div id="login">
+        <a href="{{url_for('showLogin')}}">
+            <button>login</button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</nav>
+<div class="contect_add conect_1" style="text-align:center;">
+    <h1 id="title_name">{{ item.name }}</h1>
+    <form action="{{url_for('editItem',cat_id=item.cat_id, item_id=item.id)}}" method="POST">
+        <h3 style="margin-bottom:1px;">
+            Title:
+        </h3>
+        <input type="text"
+               name="name" style="width:400px;height:35px"
+               value="{{item.name}}"/><br/>
+        <h3 style="margin-bottom:1px;">Description:</h3>
+        <textarea name="description">{{item.description}}</textarea>
+        <h3 style="margin-bottom: 1px;">Catalog:</h3>
+        <select name="Catalog">
+            {%for cat in categories %}
+            <option value="{{cat.id}}">{{cat.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="ID" value="{{item.id}}"/>
+        <br/><br/>
+        <input type="submit" value="Edite" class="design_buttom_del">
+        <a href="{{ url_for('show_items_for_category',cat_id=item.cat_id,item_id=item.id) }}">
+            <buttom class="design_buttom_can">Cancel</buttom>
+        </a>
+    </form>
+</div>
+</body>
+</html>

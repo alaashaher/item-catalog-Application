@@ -1,0 +1,231 @@
+body{
+    background:url(image/background_image.jpg); 
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+a{
+    text-decoration:none;
+}
+nav{
+    background:#7b8077; 
+    color: #d2a659;
+    margin-bottom: 25px;
+    height: 60px;
+}
+nav a{
+    color:white;
+    font-size: 40px;
+    padding-left: 14%;
+    float:left; 
+    font-weight:bold; 
+}
+
+.facebook_button {
+    width: 15%;
+    height: 62%;
+    margin-top: -2.5%;
+    margin-left: 62%;
+    background-color: rgb(66, 133, 244);
+    border-color: rgb(66, 133, 244);
+}
+
+.facebook_button a {
+  font-size: 13px;
+}
+#signinButton{
+ float: right;
+  margin-right:11%;
+  padding: 13px;  
+}
+#logout,
+#login{
+  float: right;
+  margin-right:11%;
+  padding: 13px;   
+}
+#logout button,
+#login button{
+    background: #8e0c74;
+    border: 2px solid #8e0c74;
+    padding:5px 15px;
+    cursor: pointer; 
+    width: 50px;
+    height: 20px;
+}
+#logout a,
+#login a{
+   color: #8e0c74; 
+   font-size: 20px;
+   font-weight: 100;
+   text-decoration: none;
+}
+#result .content{
+   text-align:center;
+   color:#8e0c74
+}
+#result .user_img{
+   width: 200px;
+   height: 200px;
+   border-radius: 150px;
+   -webkit-border-radius: 150px;
+   -moz-border-radius: 150px;
+}
+.clear{
+    clear:both;
+}
+.conect{
+   background: white;
+   color: #8c091a;
+   padding: 20px;
+   width: 70%;
+   margin-left: 15%;
+   height : 300px;
+   position: relative; 
+   border: 2px solid #d2a659; 
+   padding-bottom: 50px;  
+   margin-bottom: 50px;
+}
+
+.conect ul{
+    list-style-type: none;
+    margin:0px;
+    padding-top: 0px;
+    padding-left:10px;
+}
+li{
+    padding-bottom: 10px;
+}
+.conect ul .list_without_login{
+    display: none;
+}
+.conect a{
+    text-decoration: none;
+    color: rgb(152,162,11);
+    margin-bottom: 50px;
+}
+.conect .all_cat{
+    float:left;
+    width:25%;
+    border-right: 2px solid black;    
+}
+.conect .all_item{
+    float: left;
+    padding-left: 25px;
+    
+}
+
+h2{
+    font-weight: normal;
+    font-size: 1em;
+    padding-bottom: 0;
+    margin:0;
+}
+/*cat.html*/
+nav .Home{
+    float: right;
+    margin-right:11%;
+    padding: 13px; 
+}
+
+nav .Home button{
+    background: white;
+    border: 2px solid #8e0c74;
+    padding:5px 15px;
+    cursor: pointer; 
+}
+nav .Home a{
+   color: #8e0c74; 
+   font-size: 20px;
+   font-weight: 100;
+}
+#add_item{
+    width: 20%;
+    margin-left: 15%;
+    
+}
+#add_item button{
+    color:white;
+    background: #8e0c74;
+    border:2px solid white;
+    padding: 10px 50px;
+    font-weight: bold;
+    cursor: pointer; 
+    
+}
+label{
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 30px;
+}
+textarea{
+    width: 400px;
+    height: 200px;
+    font-size:20px;
+}
+.design_buttom_del,
+.design_buttom_can{
+   color:white;
+   background: #8e0c74;
+   border:2px solid white;
+   padding: 10px 50px;
+   font-weight: bold;
+   cursor: pointer; 
+}
+.design_buttom_can{
+   background: #b230e6;
+}
+.conect_1 .design_buttom_del {
+   background:#6e1d9e;
+   border: 2px solid #6e1d9e;
+   margin: 0px 2px;
+}
+.conect_1 .design_buttom_can{
+   background:#b230e6;
+   border: 2px solid #b230e6;
+}
+.conect_1 .design_buttom_del a,
+.conect_1 .design_buttom_can a{
+   color:white;
+   width: 70px;
+  height: 20px;
+}
+select{
+   width: 400px;
+   height: 40px;
+   margin: 10px 0px 20px 0px;
+}
+.conect_2 .title_name,
+#title_name{
+   color: #8e0c74;
+   background: white;
+   border:5px solid;
+   padding:10px;
+   font-weight: bold;
+   width: 40%;
+   margin-left: 29%;
+}
+.conect_2 .title_name{
+   width: auto; 
+   margin-left: auto;
+   text-align: left;
+}
+
+.page_nav a {
+  text-decoration: none;
+  color: black;
+  font-size: 25px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.id{
+  width: 100%;
+  margin-top: 100px;
+}
+
+.add #add_item {
+  margin-top: 50px;
+  width: 100px;
+  display: inline-block;
+}

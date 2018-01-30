@@ -1,0 +1,76 @@
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title> HomePage of Categories </title>
+</head>
+<body>
+<nav>
+    <div class="page_nav">
+        <a href="{{url_for('show_items_for_category')}}"> Catalog App </a>
+    </div>
+    {% if user_id != None %}
+    <div id="logout">
+        <a href="{{url_for('gdisconnect')}}">
+            <button>logout</button>
+        </a>
+    </div>
+    {% else %}
+    <div id="login">
+        <a href="{{url_for('showLogin')}}">
+            <button>login</button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</nav>
+<div class="conect">
+    <div class="all_cat">
+        <h1>Foots</h1>
+        <ul>
+            {%for cat in categories %}
+            {% if user_id != None %}
+            <li>
+                <a href="{{url_for('show_items_for_category_with_id', cat_id=cat.id)}}">
+                    {{ cat.name }}
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <a href="#">
+                    {{ cat.name }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="all_item">
+        <h1>Latest Item</h1>
+        <ul>
+            {%for i in items %}
+            {% if user_id != None %}
+            {%for cat in categories %}
+            {% if i.cat_id == cat.id %}
+            <li>
+                <a href="{{url_for('showItem', cat_id=i.cat_id, item_id=i.id)}}">
+                    {{ i.name }} <span style="color:#AAA"> ( {{ cat.name }} )</span>
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <li>
+                <a href="#">
+                    {{ i.name }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+</body>
+</html>
