@@ -1,5 +1,6 @@
 from DataBase import Category_table
 from DataBase_operation import database_operations
+from Item_filter import item_operations
 
 item = database_operations()
 new_categories = [Category_table(name='pizza'),

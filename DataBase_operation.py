@@ -14,9 +14,7 @@ database_session = sessionmaker(bind=engine)
 
 session = database_session()
 
-
 # create operations class
-
 
 class database_operations:
     def adduser(self, login_session):
@@ -38,21 +36,6 @@ class database_operations:
             return session.query(
                 user_table).filter_by(email=login_session['email']).one()
 
-    def GetCategoryBy(self, cat_id):
-        return session.query(Category_table).filter_by(id=cat_id).one()
-
-    def GetAllCategoryBy(self):
-        return session.query(Category_table).all()
-
-    def GetOneItemBy(self, i_id):
-        return session.query(Item).filter_by(id=i_id).join(Category_table).one()
-
-    def GetItemBy(self, cat_id):
-        return session.query(Item).filter_by(cat_id=cat_id).all()
-
-    def Get_last_item(self):
-        return session.query(Item).limit(10)
-
     def addDatabase(self, add_element):
         session.add(add_element)
         session.commit()
@@ -67,3 +50,19 @@ class database_operations:
         session.delete(item)
         session.commit()
         return
+
+class item_operations:
+    def GetCategory(self, cat_id):
+        return session.query(Category_table).filter_by(id=cat_id).one()
+
+    def GetAllCategory(self):
+        return session.query(Category_table).all()
+
+    def GetOneItem(self, i_id):
+        return session.query(Item).filter_by(id=i_id).join(Category_table).one()
+
+    def GetItem(self, cat_id):
+        return session.query(Item).filter_by(cat_id=cat_id).all()
+
+    def Get_last_item(self):
+        return session.query(Item).limit(10)
