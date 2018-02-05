@@ -12,7 +12,6 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from DataBase import Item
 from DataBase_operation import database_operations
-from DataBase_operation import item_operations
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from flask import make_response
@@ -20,13 +19,12 @@ from flask import make_response
 app = Flask(__name__)
 
 db = database_operations()
-fo = item_operations()
 
 id_Client = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
 
-@app.route('/catalog_page/JSON/')
+@app.route('/catalog_page.JSON')
 def catalog_pageJSON():
     categories = db.GetAllCategory()
     return jsonify(categories=[cat.serialize for cat in categories])
@@ -141,10 +139,12 @@ def gdisconnect():
         return response
 
 
+# Create anti-forgery state token
+
 @app.route('/login')
 def showLogin():
-    categories = fo.GetAllCategory()
-    latestItems = fo.Get_last_item()
+    categories = db.GetAllCategory()
+    latestItems = db.Get_last_item()
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     lhe_session['state'] = state
@@ -155,25 +155,29 @@ def showLogin():
                            items=latestItems)
 
 
+# start Pages
+
 @app.route('/')
 @app.route('/catalog_page')
 def show_items_for_category():
     if 'userName' not in lhe_session:
         return redirect(url_for('showLogin'))
     else:
-        categories = fo.GetAllCategory()
-        latestItems = fo.Get_last_item()
+        categories = db.GetAllCategory()
+        latestItems = db.Get_last_item()
         return render_template('categoires.html',
                                categories=categories,
                                items=latestItems,
                                user_id=lhe_session['user_id'])
 
 
+# show all item in cat
+
 @app.route('/catalog_page/<int:cat_id>/')
 def show_items_for_category_with_id(cat_id):
-    categories = fo.GetAllCategory()
-    cat = fo.GetCategory(cat_id)
-    items = fo.GetItem(cat_id)
+    categories = db.GetAllCategory()
+    cat = db.GetCategory(cat_id)
+    items = db.GetItem(cat_id)
     return render_template('catogray.html',
                            myCategory=cat,
                            categories=categories,
@@ -183,20 +187,24 @@ def show_items_for_category_with_id(cat_id):
 
 @app.route('/catalog/<int:cat_id>/item/<int:item_id>/')
 def showItem(cat_id, item_id):
-    cat = fo.GetCategory(cat_id)
-    i = fo.GetOneItem(item_id)
+    cat = db.GetCategory(cat_id)
+    i = db.GetOneItem(item_id)
     return render_template('itemShow.html',
                            myCategory=cat,
                            myItem=i,
                            user_id=lhe_session['user_id'])
 
 
+# CRUD for catogry Operations
+
+# Add catogry Operations
+
 @app.route('/catalog_page/<int:cat_id>/addItem', methods=['GET', 'POST'])
 def addItemCat(cat_id):
     if 'userName' not in lhe_session:
         return redirect(url_for('show_items_for_category'))
     else:
-        cat = fo.GetCategory(cat_id)
+        cat = db.GetCategory(cat_id)
         if request.method == 'POST':
             new_item = Item(name=request.form['name'],
                             description=request.form['description'],
@@ -210,50 +218,51 @@ def addItemCat(cat_id):
                                    cat=cat)
 
 
-@app.route('/catalog_page/<int:cat_id>/edit/<int:item_id>/',
+# Edit  catogry Operations
+
+@app.route('/catalog_page/edit/<int:item_id>/',
            methods=['GET', 'POST'])
-def editItem(cat_id, item_id):
+def editItem(item_id):
+    item = db.GetOneItem(item_id)
     if 'userName' not in lhe_session:
+        return redirect('/login')
+    if lhe_session['user_id'] != item.user_id:
         return redirect(url_for('show_items_for_category'))
+    if request.method == 'POST':
+        if request.form['name']:
+            item.name = request.form['name']
+        if request.form['description']:
+            item.description = request.form['description']
+        if request.form['Catalog_page']:
+            item.cat_id = request.form['Catalog_page']
+        db.addDatabase(item)
+
+        return redirect(url_for('showItem',
+                                cat_id=item.cat_id,
+                                item_id=item.id))
     else:
-        categories = fo.GetAllCategory()
-        item = fo.GetOneItem(item_id)
-        if request.method == 'POST':
-            if lhe_session['user_id'] != int(request.form['ID']):
-                return make_response('Invalid authorization paramaters.', 401)
-            if request.form['name']:
-                item.name = request.form['name']
-            if request.form['description']:
-                item.description = request.form['description']
-            if request.form['Catalog_page']:
-                item.cat_id = request.form['Catalog_page']
-            db.addDatabase(item)
-            return redirect(url_for('showItem',
-                                    cat_id=item.cat_id,
-                                    item_id=item.id))
-        else:
-            return render_template('edite_item.html',
-                                   categories=categories,
-                                   item=item)
+        category = db.GetAllCategory()
+        return render_template('edite_item.html',
+                               item=item, categories=category)
 
 
-@app.route('/catalog/<int:cat_id>/delete/<int:item_id>/',
+# Delete Operations
+
+
+@app.route('/catalog/delete/<int:item_id>/',
            methods=['GET', 'POST'])
-def deleteItem(cat_id, item_id):
+def deleteItem(item_id):
+    item = db.GetOneItem(item_id)
     if 'userName' not in lhe_session:
         return redirect(url_for('show_items_for_category'))
+    if lhe_session['user_id'] != item.user_id:
+        return redirect(url_for('show_items_for_category'))
+    if request.method == 'POST':
+        db.deleteDatabase(item)
+        return redirect(url_for('show_items_for_category'))
     else:
-        categories = fo.GetAllCategory()
-        item = fo.GetOneItem(item_id)
-        if request.method == 'POST':
-            if lhe_session['user_id'] != int(request.form['ID']):
-                return make_response('Invalid authorization paramaters.', 401)
-            db.deleteDatabase(item)
-            return redirect(url_for('show_items_for_category'))
-        else:
-            return render_template('delete_item.html',
-                                   categories=categories,
-                                   item=item)
+        return render_template('delete_item.html',
+                               item=item)
 
 
 if __name__ == '__main__':

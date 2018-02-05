@@ -14,7 +14,9 @@ database_session = sessionmaker(bind=engine)
 
 session = database_session()
 
+
 # create operations class
+
 
 class database_operations:
     def adduser(self, login_session):
@@ -51,7 +53,6 @@ class database_operations:
         session.commit()
         return
 
-class item_operations:
     def GetCategory(self, cat_id):
         return session.query(Category_table).filter_by(id=cat_id).one()
 

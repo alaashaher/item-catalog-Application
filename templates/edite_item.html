@@ -28,7 +28,7 @@
 </nav>
 <div class="contect_add conect_1" style="text-align:center;">
     <h1 id="title_name">{{ item.name }}</h1>
-    <form action="{{url_for('editItem',cat_id=item.cat_id, item_id=item.id)}}" method="POST">
+    <form action="{{url_for('editItem', item_id=item.id)}}" method="POST">
         <h3 style="margin-bottom:1px;">
             Title:
         </h3>
@@ -38,12 +38,11 @@
         <h3 style="margin-bottom:1px;">Description:</h3>
         <textarea name="description">{{item.description}}</textarea>
         <h3 style="margin-bottom: 1px;">Catalog:</h3>
-        <select name="Catalog">
+        <select name="Catalog_page">
             {%for cat in categories %}
             <option value="{{cat.id}}">{{cat.name}}</option>
             {% endfor %}
         </select>
-        <input type="hidden" name="ID" value="{{item.id}}"/>
         <br/><br/>
         <input type="submit" value="Edite" class="design_buttom_del">
         <a href="{{ url_for('show_items_for_category',cat_id=item.cat_id,item_id=item.id) }}">
